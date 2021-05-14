@@ -1,65 +1,62 @@
-package com.jusart.profesoresjusart.dao;
+package com.jusart.profesoresjusart.service;
 
 import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.jusart.profesoresjusart.dao.CourseDao;
 import com.jusart.profesoresjusart.model.Course;
 
-@Repository
+@Service("courseService")
 @Transactional
-public class CourseDaoImpl extends AbstracSession implements CourseDao{
+public class CourseServiceImpl implements CourseService{
+	
+	@Autowired
+	private CourseDao _courseDao;
 
 	@Override
 	public void saveCourse(Course course) {
 		// TODO Auto-generated method stub
-		getSession().persist(course);
-		
+		_courseDao.saveCourse(course);
 	}
 
 	@Override
 	public void deleteCourse(Long idCourse) {
-		Course course = findById(idCourse);
-		if(course != null) {
-			getSession().delete(course);
-		}
-		
+		// TODO Auto-generated method stub
+		_courseDao.deleteCourse(idCourse);
 	}
 
 	@Override
 	public void updateCourse(Course idCourse) {
 		// TODO Auto-generated method stub
-		getSession().update(idCourse);
+		_courseDao.updateCourse(idCourse);
 	}
 
 	@Override
 	public List<Course> findAllCourse() {
 		// TODO Auto-generated method stub
-		return getSession().createQuery("from Course").list();
+		return _courseDao.findAllCourse();
 	}
 
 	@Override
 	public Course findById(Long idCourse) {
 		// TODO Auto-generated method stub
-		return (Course) getSession().get(Course.class, idCourse);
+		return _courseDao.findById(idCourse);
 	}
 
 	@Override
 	public Course findByName(String name) {
 		// TODO Auto-generated method stub
-		return (Course) getSession().createQuery(
-				"from Course where name = :name")
-				.setParameter("name", name).uniqueResult();
+		return _courseDao.findByName(name);
 	}
 
 	@Override
 	public List<Course> findByIdTeacher(Long idTeacher) {
 		// TODO Auto-generated method stub
-		return (List<Course>) getSession().createQuery(
-				"from Course c join c.teacher t where t.idTeacher = :idTeacher")
-				.setParameter("idTeacher", idTeacher).list();
+		return _courseDao.findByIdTeacher(idTeacher);
 	}
 
 }

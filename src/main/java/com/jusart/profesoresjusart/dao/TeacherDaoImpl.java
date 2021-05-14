@@ -3,9 +3,15 @@ package com.jusart.profesoresjusart.dao;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Repository;
+
 import com.jusart.profesoresjusart.model.Teacher;
 import com.jusart.profesoresjusart.model.TeacherSocialMedia;
 
+@Repository
+@Transactional
 public class TeacherDaoImpl extends AbstracSession implements TeacherDao {
 
 	

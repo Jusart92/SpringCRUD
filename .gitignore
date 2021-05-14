@@ -28,3 +28,7 @@ hs_err_pid*
 ###Configuration ###
 
 /src/main/java/com/jusart/profesoresjusart/configuration/*
+
+/target/*
+
+*.project

@@ -2,10 +2,16 @@ package com.jusart.profesoresjusart.dao;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Repository;
+
 import com.jusart.profesoresjusart.model.Course;
 import com.jusart.profesoresjusart.model.SocialMedia;
 import com.jusart.profesoresjusart.model.TeacherSocialMedia;
 
+@Repository
+@Transactional
 public class SocialMediaDaoImpl extends AbstracSession implements SocialMediaDao {
 
 	public void saveSocialMedia(SocialMedia socialMedia) {
