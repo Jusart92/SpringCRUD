@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.jusart.profesoresjusart.model.SocialMedia;
 import com.jusart.profesoresjusart.service.SocialMediaService;
+import com.jusart.profesoresjusart.util.CustomErrorType;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -41,7 +42,7 @@ public class SocialMediaController {
 	@RequestMapping(value = "/socialMedias/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public ResponseEntity<SocialMedia> getSocialMediaById(@PathVariable("id") Long idSocialMedia) {
 		if (idSocialMedia == null || idSocialMedia <= 0) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
+			return new ResponseEntity(new CustomErrorType("idSocialMedia is required"), HttpStatus.CONFLICT);
 		}
 		SocialMedia socialMedia = _socialMediaService.findById(idSocialMedia);
 		if (socialMedia == null) {
@@ -56,7 +57,7 @@ public class SocialMediaController {
 	public ResponseEntity<?> crateSocialMedia(@RequestBody SocialMedia socialMedia,
 			UriComponentsBuilder uriComponentsBuilder) {
 		if (socialMedia.getName().equals(null) || socialMedia.getName().isEmpty()) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
+			new ResponseEntity(new CustomErrorType("SocialMedia name is required"), HttpStatus.CONFLICT);
 		}
 
 		if (_socialMediaService.findByName(socialMedia.getName()) != null) {
@@ -79,7 +80,7 @@ public class SocialMediaController {
 			@RequestBody SocialMedia socialMedia) {
 		SocialMedia currentSocialMedia = _socialMediaService.findById(idSocialMedia);
 		if (idSocialMedia == null || idSocialMedia <= 0) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
+			new ResponseEntity(new CustomErrorType("idSocialMedia is required"), HttpStatus.CONFLICT);
 		}
 
 		if (currentSocialMedia == null) {
@@ -96,7 +97,7 @@ public class SocialMediaController {
 	@RequestMapping(value = "/socialMedias/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
 	public ResponseEntity<?> deleteSocialMedia(@PathVariable("id") Long idSocialMedia) {
 		if (idSocialMedia == null || idSocialMedia <= 0) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
+			new ResponseEntity(new CustomErrorType("idSocialMedia is required"), HttpStatus.CONFLICT);
 		}
 		
 		SocialMedia socialMedia = _socialMediaService.findById(idSocialMedia);
