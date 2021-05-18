@@ -32,3 +32,8 @@ hs_err_pid*
 /target/*
 
 *.project
+
+#IMGS##
+*.jpg
+*.jpeg
+*.png
