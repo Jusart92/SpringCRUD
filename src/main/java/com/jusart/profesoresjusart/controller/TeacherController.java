@@ -134,8 +134,9 @@ public class TeacherController {
 	}
 	
 	public static final String TEACHER_UPLOADED_FOLDER = "images/teachers/";
+	
 	//CREATE TEACHER IMAGE
-	@RequestMapping(value = "/teachers/image", method = RequestMethod.POST, headers = "content-type=multipart/form-data")
+	@RequestMapping(value = "/teachers/images", method = RequestMethod.POST, headers = "content-type=multipart/form-data")
 	public ResponseEntity<byte[]>uploadTeacherImage(
 			@RequestParam("id_teacher")Long idTeacher,
 			@RequestParam("file")MultipartFile multipartFile,
@@ -183,5 +184,34 @@ public class TeacherController {
 
 		}
 		
+	}
+	
+	//GET IMGAE
+	@RequestMapping(value = "/teachers/{id_teacher}/images", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> getTeacherImages(@PathVariable("id_teacher")Long idTeacher){
+		if(idTeacher == null) {
+			return new ResponseEntity(new CustomErrorType("Please set id_teacher"), HttpStatus.NO_CONTENT);
+		}
+		
+		Teacher teacher = _teacherService.findById(idTeacher);
+		
+		if(teacher == null) {
+			return new ResponseEntity(new CustomErrorType("Teacher with id_teacher: "+ idTeacher + " not found"), HttpStatus.NO_CONTENT);
+		}
+		try {
+			String fileName = teacher.getAvatar();
+			Path path = Paths.get(fileName);
+			File f = path.toFile();
+			if (!f.exists()) {
+				return new ResponseEntity(new CustomErrorType("Image not found"), HttpStatus.NO_CONTENT);
+			}
+			
+			byte[] image = Files.readAllBytes(path);
+			return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity(new CustomErrorType("Error to show image"), HttpStatus.NO_CONTENT);
+		}
 	}
 }
